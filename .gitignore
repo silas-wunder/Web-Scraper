@@ -1,1 +1,4 @@
 *.code-workspace
+*.vscode
+geckodriver.log
+example.html
