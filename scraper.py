@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from datetime import datetime
 
 # email stuff
 port = 465
@@ -75,5 +76,9 @@ if len(cards_in_stock) != 0:
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender, password)
         server.sendmail(sender, reciever, message.as_string())
+        print(f"Cards found in stock, email sent at {datetime.now()}.")
+
+else:
+    print(f"No cards found, exiting at {datetime.now()}")
 
 driver.quit()
