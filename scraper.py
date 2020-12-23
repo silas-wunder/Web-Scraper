@@ -26,7 +26,7 @@ options.headless = True
 options.add_argument("--window-size=1920,1200")
 
 # the search page to look at
-url = "https://www.microcenter.com/search/search_results.aspx?N=4294966937+4294808776+4294808774+4294808740&NTK=all&sortby=match&rpp=96"
+url = "https://www.microcenter.com/search/search_results.aspx?Ntk=all&sortby=match&N=4294966937+4294808776+4294808774+4294808740&myStore=true&storeid=181"
 
 # actually grabs the page html
 driver = webdriver.Chrome(options=options)
@@ -84,8 +84,6 @@ if len(cards_in_stock) != 0:
 else:
     print(f"No cards found, exiting at {datetime.now()}")
 
-pid = driver.service.process.pid
-#os.system(f'taskkill /f /pid {pid}')
 os.system(f'taskkill /f /im chrome.exe')
 print()
 
