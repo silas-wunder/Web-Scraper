@@ -1,7 +1,9 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import smtplib, ssl
+import smtplib
+import ssl
+import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -27,7 +29,7 @@ options.add_argument("--window-size=1920,1200")
 url = "https://www.microcenter.com/search/search_results.aspx?N=4294966937+4294808776+4294808774+4294808740&NTK=all&sortby=match&rpp=96"
 
 # actually grabs the page html
-driver = webdriver.Firefox(options=options)
+driver = webdriver.Chrome(options=options)
 driver.get(url)
 
 # grabs all the products from search, each product is part of 'product-wrapper'
@@ -55,7 +57,8 @@ if len(cards_in_stock) != 0:
     # loop through each card and pull relevant information about the card
     for card in cards_in_stock:
         card_price = card.find('div', class_='price').text
-        card_url = "microcenter.com" + card.find('div', class_='normal').find('a', href=True).get('href')
+        card_url = "microcenter.com" + \
+            card.find('div', class_='normal').find('a', href=True).get('href')
         card_name = card.find('div', class_='normal').text
         card_price = card_price.strip()
         card_url = card_url.strip()
@@ -70,15 +73,20 @@ if len(cards_in_stock) != 0:
         messageHTML += html
     messageHTML += "\n</html>"
     message.attach(MIMEText(messageHTML, "html"))
-    
+
     # send the email
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender, password)
         server.sendmail(sender, reciever, message.as_string())
-        print(f"Cards found in stock, email sent at {datetime.now()}.")
+    print(f"Cards found in stock, email sent at {datetime.now()}.")
 
 else:
     print(f"No cards found, exiting at {datetime.now()}")
+
+pid = driver.service.process.pid
+#os.system(f'taskkill /f /pid {pid}')
+os.system(f'taskkill /f /im chrome.exe')
+print()
 
 driver.quit()

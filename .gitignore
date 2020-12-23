@@ -3,4 +3,5 @@
 *.txt
 *.log
 *.bat
-example.html
+*.exe
+*.html
