@@ -84,7 +84,7 @@ if len(cards_in_stock) != 0:
 else:
     print(f"No cards found, exiting at {datetime.now()}")
 
-os.system(f'taskkill /f /im chrome.exe')
-print()
-
+os.system(f'taskkill /f /im chrome.exe >nul')
+os.system(f'taskkill /f /im chromedriver.exe >nul')
 driver.quit()
+print()
