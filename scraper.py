@@ -24,9 +24,10 @@ recieverfile.close()
 options = Options()
 options.headless = True
 options.add_argument("--window-size=1920,1200")
+options.add_argument("--log-level=3")
 
 # the search page to look at
-url = "https://www.microcenter.com/search/search_results.aspx?Ntk=all&sortby=match&N=4294966937+4294808776+4294808774+4294808740&myStore=true&storeid=181"
+url = "https://www.microcenter.com/search/search_results.aspx?Ntk=all&sortby=match&N=4294966937+4294808776+4294808740+4294808774&myStore=true&storeid=181"
 
 # actually grabs the page html
 driver = webdriver.Chrome(options=options)
@@ -41,8 +42,8 @@ cards_in_stock = []
 
 # add every In Stock card to list
 for card_listing in cards:
-    stock_amount = card_listing.find('div', class_='stock').find('strong').text
-    if stock_amount != '\nSold Out' and stock_amount != '\nNot Carried In This Store':
+    stock_amount = card_listing.find('div', class_='stock').text
+    if stock_amount != '\nSOLD OUT at Denver Store\n':
         cards_in_stock.append(card_listing)
 
 # if there are in stock cards, pull relevant info and send an email
